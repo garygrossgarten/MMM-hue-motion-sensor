@@ -1,4 +1,4 @@
-import { r as registerInstance, h } from './core-55587c87.js';
+import { r as registerInstance } from './core-890a0982.js';
 
 function isFunction(x) {
     return typeof x === 'function';
@@ -1763,9 +1763,6 @@ const MotionSensor = class {
         this.timeout = 60000;
         this.onDestroy$ = new Subject();
         this.isPresent = false;
-    }
-    render() {
-        return (h("h3", null, this.isPresent ? 'Hey there' : 'no one around'));
     }
     componentDidLoad() {
         this.presence = timer(0, 2000).pipe(switchMap(() => fetch(`http://${this.ip}/api/${this.username}/sensors/${this.sensor}`)), switchMap(res => res.json()), share(), map((res) => res.state.presence), tap(presence => this.isPresent = presence), catchError(() => of(false)));

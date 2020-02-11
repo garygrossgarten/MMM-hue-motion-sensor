@@ -1,1 +1,1 @@
-import{p as s,b as r}from"./p-4fb9f1c3.js";s().then(s=>r([["p-3kvz36ug",[[0,"hue-motion-sensor",{ip:[1],raspberry:[1],username:[1],sensor:[1],timeout:[2]}]]]],s));
+import{p as s,b as o}from"./p-540de90b.js";s().then(s=>o([["p-fooxsn8v",[[0,"hue-motion-sensor",{ip:[1],raspberry:[1],username:[1],sensor:[1],timeout:[2]}]]]],s));

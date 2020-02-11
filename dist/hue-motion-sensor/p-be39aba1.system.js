@@ -1,0 +1,1 @@
+System.register(["./p-bbbd3e0a.system.js"],(function(){"use strict";var e,s;return{setters:[function(t){e=t.p;s=t.b}],execute:function(){e().then((function(e){return s([["p-aqsd0sr3.system",[[0,"hue-motion-sensor",{ip:[1],raspberry:[1],username:[1],sensor:[1],timeout:[2]}]]]],e)}))}}}));

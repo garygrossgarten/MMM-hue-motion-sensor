@@ -1,4 +1,3 @@
-import { h } from "@stencil/core";
 import { Subject, timer, of, from } from 'rxjs';
 import { map, catchError, flatMap, filter, pairwise, tap, takeUntil, switchMap, share } from 'rxjs/operators';
 export class MotionSensor {
@@ -6,9 +5,6 @@ export class MotionSensor {
         this.timeout = 60000;
         this.onDestroy$ = new Subject();
         this.isPresent = false;
-    }
-    render() {
-        return (h("h3", null, this.isPresent ? 'Hey there' : 'no one around'));
     }
     componentDidLoad() {
         this.presence = timer(0, 2000).pipe(switchMap(() => fetch(`http://${this.ip}/api/${this.username}/sensors/${this.sensor}`)), switchMap(res => res.json()), share(), map((res) => res.state.presence), tap(presence => this.isPresent = presence), catchError(() => of(false)));

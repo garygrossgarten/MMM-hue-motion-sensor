@@ -1,4 +1,4 @@
-import { Component, h, Prop } from '@stencil/core';
+import { Component, Prop } from '@stencil/core';
 import { Observable, Subject, timer, of, from} from 'rxjs';
 import { map, catchError, flatMap, filter, pairwise, tap, takeUntil, switchMap, share} from 'rxjs/operators';
 
@@ -8,12 +8,6 @@ import { map, catchError, flatMap, filter, pairwise, tap, takeUntil, switchMap, 
   shadow: false
 })
 export class MotionSensor {
-
-  render() {
-    return (
-    <h3>{this.isPresent ? 'Hey there' : 'no one around'}</h3>
-    );
-  }
 
 
   @Prop() ip: string;

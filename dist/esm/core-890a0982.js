@@ -1,24 +1,3 @@
-'use strict';
-
-function _interopNamespace(e) {
-  if (e && e.__esModule) { return e; } else {
-    var n = {};
-    if (e) {
-      Object.keys(e).forEach(function (k) {
-        var d = Object.getOwnPropertyDescriptor(e, k);
-        Object.defineProperty(n, k, d.get ? d : {
-          enumerable: true,
-          get: function () {
-            return e[k];
-          }
-        });
-      });
-    }
-    n['default'] = e;
-    return n;
-  }
-}
-
 const NAMESPACE = 'hue-motion-sensor';
 
 let queueCongestion = 0;
@@ -67,11 +46,11 @@ const loadModule = (cmpMeta, hostRef, hmrVersionId) => {
     if (module) {
         return module[exportName];
     }
-    return new Promise(function (resolve) { resolve(_interopNamespace(require(
+    return import(
     /* webpackInclude: /\.entry\.js$/ */
     /* webpackExclude: /\.system\.entry\.js$/ */
     /* webpackMode: "lazy" */
-    `./${bundleId}.entry.js${ ''}`))); }).then(importedModule => {
+    `./${bundleId}.entry.js${ ''}`).then(importedModule => {
         {
             moduleCache.set(bundleId, importedModule);
         }
@@ -162,7 +141,7 @@ const patchEsm = () => {
     // @ts-ignore
     if ( !(win.CSS && win.CSS.supports && win.CSS.supports('color', 'var(--c)'))) {
         // @ts-ignore
-        return new Promise(function (resolve) { resolve(require('./css-shim-6aaf713d-bfe06088.js')); }).then(() => {
+        return import('./css-shim-6aaf713d-9b13816a.js').then(() => {
             plt.$cssShim$ = win.__stencil_cssshim;
             if (plt.$cssShim$) {
                 return plt.$cssShim$.initShim();
@@ -180,7 +159,7 @@ const patchBrowser = () => {
     const scriptElm = Array.from(doc.querySelectorAll('script')).find(s => (new RegExp(`\/${NAMESPACE}(\\.esm)?\\.js($|\\?|#)`).test(s.src) ||
         s.getAttribute('data-stencil-namespace') === NAMESPACE));
     const opts = scriptElm['data-opts'] || {};
-    const importMeta = (typeof document === 'undefined' ? new (require('u' + 'rl').URL)('file:' + __filename).href : (document.currentScript && document.currentScript.src || new URL('core-f4c8fcf5.js', document.baseURI).href));
+    const importMeta = "";
     if ('onbeforeload' in scriptElm && !history.scrollRestoration /* IS_ESM_BUILD */) {
         // Safari < v11 support: This IF is true if it's Safari below v11.
         // This fn cannot use async/await since Safari didn't support it until v11,
@@ -200,7 +179,7 @@ const patchBrowser = () => {
         if (!window.customElements) {
             // module support, but no custom elements support (Old Edge)
             // @ts-ignore
-            return new Promise(function (resolve) { resolve(require('./dom-76cc7c7d-769a0dda.js')); }).then(() => opts);
+            return import('./dom-76cc7c7d-0a082895.js').then(() => opts);
         }
     }
     return Promise.resolve(opts);
@@ -335,228 +314,6 @@ const attachStyles = (elm, cmpMeta, mode) => {
     endAttachStyles();
 };
 const getScopeId = (tagName, mode) => 'sc-' + ( tagName);
-/**
- * Production h() function based on Preact by
- * Jason Miller (@developit)
- * Licensed under the MIT License
- * https://github.com/developit/preact/blob/master/LICENSE
- *
- * Modified for Stencil's compiler and vdom
- */
-// const stack: any[] = [];
-// export function h(nodeName: string | d.FunctionalComponent, vnodeData: d.PropsType, child?: d.ChildType): d.VNode;
-// export function h(nodeName: string | d.FunctionalComponent, vnodeData: d.PropsType, ...children: d.ChildType[]): d.VNode;
-const h = (nodeName, vnodeData, ...children) => {
-    let child = null;
-    let simple = false;
-    let lastSimple = false;
-    let vNodeChildren = [];
-    const walk = (c) => {
-        for (let i = 0; i < c.length; i++) {
-            child = c[i];
-            if (Array.isArray(child)) {
-                walk(child);
-            }
-            else if (child != null && typeof child !== 'boolean') {
-                if (simple = typeof nodeName !== 'function' && !isComplexType(child)) {
-                    child = String(child);
-                }
-                if (simple && lastSimple) {
-                    // If the previous child was simple (string), we merge both
-                    vNodeChildren[vNodeChildren.length - 1].$text$ += child;
-                }
-                else {
-                    // Append a new vNode, if it's text, we create a text vNode
-                    vNodeChildren.push(simple ? newVNode(null, child) : child);
-                }
-                lastSimple = simple;
-            }
-        }
-    };
-    walk(children);
-    const vnode = newVNode(nodeName, null);
-    vnode.$attrs$ = vnodeData;
-    if (vNodeChildren.length > 0) {
-        vnode.$children$ = vNodeChildren;
-    }
-    return vnode;
-};
-const newVNode = (tag, text) => {
-    const vnode = {
-        $flags$: 0,
-        $tag$: tag,
-        $text$: text,
-        $elm$: null,
-        $children$: null
-    };
-    return vnode;
-};
-const Host = {};
-const isHost = (node) => node && node.$tag$ === Host;
-const createElm = (oldParentVNode, newParentVNode, childIndex, parentElm) => {
-    // tslint:disable-next-line: prefer-const
-    let newVNode = newParentVNode.$children$[childIndex];
-    let i = 0;
-    let elm;
-    let childNode;
-    if ( newVNode.$text$ !== null) {
-        // create text node
-        elm = newVNode.$elm$ = doc.createTextNode(newVNode.$text$);
-    }
-    else {
-        // create element
-        elm = newVNode.$elm$ = ( doc.createElement( newVNode.$tag$));
-        if (newVNode.$children$) {
-            for (i = 0; i < newVNode.$children$.length; ++i) {
-                // create the node
-                childNode = createElm(oldParentVNode, newVNode, i);
-                // return node could have been null
-                if (childNode) {
-                    // append our new node
-                    elm.appendChild(childNode);
-                }
-            }
-        }
-    }
-    return elm;
-};
-const addVnodes = (parentElm, before, parentVNode, vnodes, startIdx, endIdx) => {
-    let containerElm = ( parentElm);
-    let childNode;
-    for (; startIdx <= endIdx; ++startIdx) {
-        if (vnodes[startIdx]) {
-            childNode = createElm(null, parentVNode, startIdx);
-            if (childNode) {
-                vnodes[startIdx].$elm$ = childNode;
-                containerElm.insertBefore(childNode,  before);
-            }
-        }
-    }
-};
-const removeVnodes = (vnodes, startIdx, endIdx, vnode, elm) => {
-    for (; startIdx <= endIdx; ++startIdx) {
-        if (vnode = vnodes[startIdx]) {
-            elm = vnode.$elm$;
-            // remove the vnode's element from the dom
-            elm.remove();
-        }
-    }
-};
-const updateChildren = (parentElm, oldCh, newVNode, newCh) => {
-    let oldStartIdx = 0;
-    let newStartIdx = 0;
-    let oldEndIdx = oldCh.length - 1;
-    let oldStartVnode = oldCh[0];
-    let oldEndVnode = oldCh[oldEndIdx];
-    let newEndIdx = newCh.length - 1;
-    let newStartVnode = newCh[0];
-    let newEndVnode = newCh[newEndIdx];
-    let node;
-    while (oldStartIdx <= oldEndIdx && newStartIdx <= newEndIdx) {
-        if (oldStartVnode == null) {
-            // Vnode might have been moved left
-            oldStartVnode = oldCh[++oldStartIdx];
-        }
-        else if (oldEndVnode == null) {
-            oldEndVnode = oldCh[--oldEndIdx];
-        }
-        else if (newStartVnode == null) {
-            newStartVnode = newCh[++newStartIdx];
-        }
-        else if (newEndVnode == null) {
-            newEndVnode = newCh[--newEndIdx];
-        }
-        else if (isSameVnode(oldStartVnode, newStartVnode)) {
-            patch(oldStartVnode, newStartVnode);
-            oldStartVnode = oldCh[++oldStartIdx];
-            newStartVnode = newCh[++newStartIdx];
-        }
-        else if (isSameVnode(oldEndVnode, newEndVnode)) {
-            patch(oldEndVnode, newEndVnode);
-            oldEndVnode = oldCh[--oldEndIdx];
-            newEndVnode = newCh[--newEndIdx];
-        }
-        else if (isSameVnode(oldStartVnode, newEndVnode)) {
-            patch(oldStartVnode, newEndVnode);
-            parentElm.insertBefore(oldStartVnode.$elm$, oldEndVnode.$elm$.nextSibling);
-            oldStartVnode = oldCh[++oldStartIdx];
-            newEndVnode = newCh[--newEndIdx];
-        }
-        else if (isSameVnode(oldEndVnode, newStartVnode)) {
-            patch(oldEndVnode, newStartVnode);
-            parentElm.insertBefore(oldEndVnode.$elm$, oldStartVnode.$elm$);
-            oldEndVnode = oldCh[--oldEndIdx];
-            newStartVnode = newCh[++newStartIdx];
-        }
-        else {
-            {
-                // new element
-                node = createElm(oldCh && oldCh[newStartIdx], newVNode, newStartIdx);
-                newStartVnode = newCh[++newStartIdx];
-            }
-            if (node) {
-                {
-                    oldStartVnode.$elm$.parentNode.insertBefore(node, oldStartVnode.$elm$);
-                }
-            }
-        }
-    }
-    if (oldStartIdx > oldEndIdx) {
-        addVnodes(parentElm, (newCh[newEndIdx + 1] == null ? null : newCh[newEndIdx + 1].$elm$), newVNode, newCh, newStartIdx, newEndIdx);
-    }
-    else if ( newStartIdx > newEndIdx) {
-        removeVnodes(oldCh, oldStartIdx, oldEndIdx);
-    }
-};
-const isSameVnode = (vnode1, vnode2) => {
-    // compare if two vnode to see if they're "technically" the same
-    // need to have the same element tag, and same key to be the same
-    if (vnode1.$tag$ === vnode2.$tag$) {
-        return true;
-    }
-    return false;
-};
-const patch = (oldVNode, newVNode) => {
-    const elm = newVNode.$elm$ = oldVNode.$elm$;
-    const oldChildren = oldVNode.$children$;
-    const newChildren = newVNode.$children$;
-    if ( newVNode.$text$ === null) {
-        if ( oldChildren !== null && newChildren !== null) {
-            // looks like there's child vnodes for both the old and new vnodes
-            updateChildren(elm, oldChildren, newVNode, newChildren);
-        }
-        else if (newChildren !== null) {
-            // no old child vnodes, but there are new child vnodes to add
-            if ( oldVNode.$text$ !== null) {
-                // the old vnode was text, so be sure to clear it out
-                elm.textContent = '';
-            }
-            // add the new vnode children
-            addVnodes(elm, null, newVNode, newChildren, 0, newChildren.length - 1);
-        }
-        else if ( oldChildren !== null) {
-            // no new child vnodes, but there are old child vnodes to remove
-            removeVnodes(oldChildren, 0, oldChildren.length - 1);
-        }
-    }
-    else if ( oldVNode.$text$ !== newVNode.$text$) {
-        // update the text content for the text only vnode
-        // and also only if the text is different than before
-        elm.data = newVNode.$text$;
-    }
-};
-const renderVdom = (hostElm, hostRef, cmpMeta, renderFnResults) => {
-    const oldVNode = hostRef.$vnode$ || newVNode(null, null);
-    const rootVnode = isHost(renderFnResults)
-        ? renderFnResults
-        : h(null, null, renderFnResults);
-    rootVnode.$tag$ = null;
-    rootVnode.$flags$ |= 4 /* isHost */;
-    hostRef.$vnode$ = rootVnode;
-    rootVnode.$elm$ = oldVNode.$elm$ = ( hostElm);
-    // synchronous patch
-    patch(oldVNode, rootVnode);
-};
 const attachToAncestor = (hostRef, ancestorComponent) => {
     if ( ancestorComponent && !hostRef.$onRenderResolve$) {
         ancestorComponent['s-p'].push(new Promise(r => hostRef.$onRenderResolve$ = r));
@@ -592,14 +349,6 @@ const updateComponent = (elm, hostRef, cmpMeta, instance, isInitialLoad) => {
         attachStyles(elm, cmpMeta, hostRef.$modeName$);
     }
     const endRender = createTime('render', cmpMeta.$tagName$);
-    {
-        {
-            // looks like we've got child nodes to render into this host element
-            // or we need to update the css class/attrs on the host element
-            // DOM WRITE!
-            renderVdom(elm, hostRef, cmpMeta, callRender(instance));
-        }
-    }
     if ( plt.$cssShim$) {
         plt.$cssShim$.updateHost(elm);
     }
@@ -630,15 +379,6 @@ const updateComponent = (elm, hostRef, cmpMeta, instance, isInitialLoad) => {
             childrenPromises.length = 0;
         }
     }
-};
-const callRender = (instance, elm) => {
-    try {
-        instance =  instance.render() ;
-    }
-    catch (e) {
-        consoleError(e);
-    }
-    return instance;
 };
 const postUpdateComponent = (elm, hostRef, cmpMeta) => {
     const endPostUpdate = createTime('postUpdate', cmpMeta.$tagName$);
@@ -993,8 +733,4 @@ const bootstrapLazy = (lazyBundles, options = {}) => {
     endBootstrap();
 };
 
-exports.bootstrapLazy = bootstrapLazy;
-exports.h = h;
-exports.patchBrowser = patchBrowser;
-exports.patchEsm = patchEsm;
-exports.registerInstance = registerInstance;
+export { patchEsm as a, bootstrapLazy as b, patchBrowser as p, registerInstance as r };

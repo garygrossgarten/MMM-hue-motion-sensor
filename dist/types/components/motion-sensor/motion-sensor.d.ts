@@ -1,6 +1,5 @@
 import { Observable, Subject } from 'rxjs';
 export declare class MotionSensor {
-    render(): any;
     ip: string;
     raspberry: string;
     username: string;

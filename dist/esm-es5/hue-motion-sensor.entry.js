@@ -11,7 +11,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import { r as registerInstance, h } from './core-55587c87.js';
+import { r as registerInstance } from './core-890a0982.js';
 function isFunction(x) {
     return typeof x === 'function';
 }
@@ -1821,9 +1821,6 @@ var MotionSensor = /** @class */ (function () {
         this.onDestroy$ = new Subject();
         this.isPresent = false;
     }
-    MotionSensor.prototype.render = function () {
-        return (h("h3", null, this.isPresent ? 'Hey there' : 'no one around'));
-    };
     MotionSensor.prototype.componentDidLoad = function () {
         var _this = this;
         this.presence = timer(0, 2000).pipe(switchMap(function () { return fetch("http://" + _this.ip + "/api/" + _this.username + "/sensors/" + _this.sensor); }), switchMap(function (res) { return res.json(); }), share(), map(function (res) { return res.state.presence; }), tap(function (presence) { return _this.isPresent = presence; }), catchError(function () { return of(false); }));

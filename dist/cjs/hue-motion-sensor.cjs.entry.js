@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const core = require('./core-f4c8fcf5.js');
+const core = require('./core-f8e45fce.js');
 
 function isFunction(x) {
     return typeof x === 'function';
@@ -1767,9 +1767,6 @@ const MotionSensor = class {
         this.timeout = 60000;
         this.onDestroy$ = new Subject();
         this.isPresent = false;
-    }
-    render() {
-        return (core.h("h3", null, this.isPresent ? 'Hey there' : 'no one around'));
     }
     componentDidLoad() {
         this.presence = timer(0, 2000).pipe(switchMap(() => fetch(`http://${this.ip}/api/${this.username}/sensors/${this.sensor}`)), switchMap(res => res.json()), share(), map((res) => res.state.presence), tap(presence => this.isPresent = presence), catchError(() => of(false)));
